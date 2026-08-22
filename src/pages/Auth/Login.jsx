@@ -11,12 +11,12 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const { updateUser } = useContext(UserContext);
 
   const navigate = useNavigate();
 
-  // Handle login form submit
   const handleLogin = async (e) => {
     e.preventDefault();
 
@@ -31,8 +31,8 @@ const Login = () => {
     }
 
     setError(null);
+    setIsSubmitting(true);
 
-    // Perform login logic here
     try {
       const response = await axiosInstance.post(API_PATHS.AUTH.LOGIN, {
         email,
@@ -45,7 +45,6 @@ const Login = () => {
         localStorage.setItem('token', token);
         updateUser(response.data);
 
-        // redirect based on role
         if (role === 'admin') {
           navigate("/admin/dashboard");
         } else {
@@ -58,13 +57,15 @@ const Login = () => {
       } else {
         setError('Something went wrong. Please try again.');
       }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return <AuthLayout>
-    <div className='lg:w-[70%] h-3/4 md:h-full flex flex-col justify-center'>
-      <h3 className='text-xl font-semibold text-black'>Welcome Back</h3>
-      <p className='text-xs text-slate-700 mt-[5px] mb-6'>
+    <div className='lg:w-[76%] h-3/4 md:h-full flex flex-col justify-center'>
+      <h3 className='text-2xl font-display font-semibold text-ink-900 mt-10'>Welcome back</h3>
+      <p className='text-[13px] text-ink-600 mt-1.5 mb-8'>
         Please enter your details to login
       </p>
 
@@ -84,27 +85,34 @@ const Login = () => {
           placeholder='Password'
         />
 
-        {error && <p className='text-xs text-red-600'>{error}</p>}
+        {error && (
+          <p className='text-xs text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2 mt-1'>
+            {error}
+          </p>
+        )}
 
         <button
           type='submit'
+          disabled={isSubmitting}
           className='btn-primary cursor-pointer'
         >
-          Login
+          {isSubmitting ? 'Logging in…' : 'Login'}
         </button>
 
-        <div className='mt-3'>
-          <p className='text-[13px] text-slate-800'>
+        <div className='mt-2'>
+          <p className='text-[13px] text-ink-600'>
             Don&apos;t have an account?{' '}
             <Link
-              className='font-medium text-blue-600 underline'
+              className='font-medium text-brand-500 hover:text-brand-600 underline underline-offset-2'
               to='/signUp'
             >
               Sign Up
             </Link>
           </p>
 
-          <p className='font-medium text-blue-600 underline'>Contact Admin</p>
+          <p className='text-[13px] font-medium text-brand-500 hover:text-brand-600 underline underline-offset-2 mt-2 cursor-pointer w-fit'>
+            Contact Admin
+          </p>
         </div>
       </form>
     </div>

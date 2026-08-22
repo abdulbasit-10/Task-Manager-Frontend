@@ -21,11 +21,10 @@ const SignUp = () => {
   const navigate = useNavigate();
 
   const [error, setError] = useState(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const handleSignUp = async (e) => {
     e.preventDefault();
-
-    // console.log(fullName, email, password, adminInviteToken);
 
     let profileImageUrl = "";
 
@@ -45,10 +44,9 @@ const SignUp = () => {
     }
 
     setError(null);
+    setIsSubmitting(true);
 
-    // Perform sign-up logic here
     try {
-      // upload profile image if exists
       if (profilePic) {
         const imgUploadRes = await uploadImage(profilePic);
         profileImageUrl = imgUploadRes.imageUrl || "";
@@ -67,7 +65,6 @@ const SignUp = () => {
         localStorage.setItem('token', token);
         updateUser(response.data);
 
-        // redirect based on role
         if (role === 'admin') {
           navigate('/admin/dashboard');
         } else {
@@ -80,21 +77,23 @@ const SignUp = () => {
       } else {
         setError('Something went wrong. Please try again.');
       }
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   return (
     <AuthLayout>
       <div className='lg:w-[100%] h-auto md:h-full mt-10 md:mt-0 flex flex-col justify-center'>
-        <h3 className='text-xl font-semibold text-black'>Create an Account</h3>
-        <p className='text-xs text-slate-700 mt-[5px] mb-6'>
+        <h3 className='text-2xl font-display font-semibold text-ink-900'>Create an account</h3>
+        <p className='text-[13px] text-ink-600 mt-1.5 mb-7'>
           Join us today by entering your details below.
         </p>
 
         <form onSubmit={handleSignUp}>
           <ProfilePhotoSelector image={profilePic} setImage={setProfilePic} />
 
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-4'>
+          <div className='grid grid-cols-1 md:grid-cols-2 gap-x-4'>
             <Input
               value={fullName}
               onChange={({ target }) => setFullName(target.value)}
@@ -127,30 +126,34 @@ const SignUp = () => {
             />
           </div>
 
-          {error && <p className='text-xs text-red-600'>{error}</p>}
+          {error && (
+            <p className='text-xs text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2 mt-2'>
+              {error}
+            </p>
+          )}
 
           <button
             type='submit'
-            className='btn-primary'
+            disabled={isSubmitting}
+            className='btn-primary cursor-pointer'
           >
-            Sign Up
+            {isSubmitting ? 'Creating account…' : 'Sign Up'}
           </button>
 
-          <p className=''>
-            Already have an account?
+          <p className='text-[13px] text-ink-600'>
+            Already have an account?{' '}
             <Link
-              className='font-medium text-blue-600 underline'
+              className='font-medium text-brand-500 hover:text-brand-600 underline underline-offset-2'
               to='/login'
             >
               Login
             </Link>
           </p>
-
-
         </form>
       </div>
-    </AuthLayout >
+    </AuthLayout>
   )
 }
 
 export default SignUp
+
