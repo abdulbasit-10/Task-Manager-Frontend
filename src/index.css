@@ -101,3 +101,13 @@ body {
 .user-card {
   @apply bg-white p-4 rounded-xl shadow-md shadow-gray-100 border border-gray-200/50 cursor-pointer;
 }
+
+.scrollbar-hide {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+    display: none;
+}
+

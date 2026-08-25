@@ -13,6 +13,7 @@ const SelectDropdown = ({ options, onChange, value, placeholder }) => {
         <div className='relative w-full'>
             {/* Dropdown box */}
             <button
+                type="button"
                 onClick={() => setIsOpen(!isOpen)}
                 className="w-full text-sm text-black outline-none  border border-slate-100 px-2.5 py-3 rounded-md mt-2 flex justify-between items-center relative "
             >
@@ -27,7 +28,9 @@ const SelectDropdown = ({ options, onChange, value, placeholder }) => {
                     {options.map((option) => (
                         <div
                             key={option.value}
-                            className='px-3 py-2 cursor-pointer hover:bg-gray-100'
+                            className={`px-3 py-2 cursor-pointer hover:bg-brand-50 ${
+                                option.value === value ? 'bg-brand-50 text-brand-600 font-medium' : ''
+                            }`}
                             onClick={() => handleSelect(option.value)}
                         >
                             {option.label}
@@ -41,3 +44,4 @@ const SelectDropdown = ({ options, onChange, value, placeholder }) => {
 }
 
 export default SelectDropdown
+

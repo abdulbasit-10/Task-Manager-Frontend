@@ -104,14 +104,14 @@ const Dashboard = () => {
                 <InfoCard
                     // icon={<IoMdCard />}
                     label="Inprogress Tasks"
-                    value={addThousandSeparator(dashboardData?.charts?.taskDistribution?.Inprogress || 0)}
+                    value={addThousandSeparator(dashboardData?.charts?.taskDistribution?.InProgress || 0)}
                     color="bg-cyan-500"
                 />
 
                 <InfoCard
                     // icon={<IoMdCard />}
                     label="Completed Tasks"
-                    value={addThousandSeparator(dashboardData?.charts?.taskDistribution?.Pending || 0)}
+                    value={addThousandSeparator(dashboardData?.charts?.taskDistribution?.Completed || 0)}
                     color="bg-lime-500"
                 />
             </div>

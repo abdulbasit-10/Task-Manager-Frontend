@@ -14,7 +14,6 @@ const SignUp = () => {
   const [fullName, setFullName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [adminInviteToken, setAdminInviteToken] = useState("");
 
   const { updateUser } = useContext(UserContext);
 
@@ -28,7 +27,12 @@ const SignUp = () => {
 
     let profileImageUrl = "";
 
-    if (!fullName) {
+    if (!profilePic) {
+      setError('Please upload a profile photo.');
+      return;
+    }
+
+    if (!fullName.trim()) {
       setError('Please enter your full name.');
       return;
     }
@@ -55,7 +59,6 @@ const SignUp = () => {
         name: fullName,
         email,
         password,
-        adminInviteToken,
         profileImageUrl
       })
 
@@ -84,21 +87,21 @@ const SignUp = () => {
 
   return (
     <AuthLayout>
-      <div className='lg:w-[100%] h-auto md:h-full mt-10 md:mt-0 flex flex-col justify-center'>
+      <div className='w-full max-w-md mx-auto md:mx-0 h-auto md:h-full flex flex-col justify-center py-10 md:py-0'>
         <h3 className='text-2xl font-display font-semibold text-ink-900'>Create an account</h3>
         <p className='text-[13px] text-ink-600 mt-1.5 mb-7'>
           Join us today by entering your details below.
         </p>
 
-        <form onSubmit={handleSignUp}>
+        <form onSubmit={handleSignUp} className='space-y-1'>
           <ProfilePhotoSelector image={profilePic} setImage={setProfilePic} />
 
-          <div className='grid grid-cols-1 md:grid-cols-2 gap-x-4'>
+          <div className='space-y-1'>
             <Input
               value={fullName}
               onChange={({ target }) => setFullName(target.value)}
               label="Full Name"
-              placeholder="Jhon"
+              placeholder="Enter your full name"
               type="text"
             />
 
@@ -106,28 +109,21 @@ const SignUp = () => {
               value={email}
               onChange={({ target }) => setEmail(target.value)}
               label='Email Address'
-              placeholder='munim@example.com'
+              placeholder='Enter your email address'
               type='text'
             />
+
             <Input
               value={password}
               onChange={({ target }) => setPassword(target.value)}
               label='Password'
               type='password'
-              placeholder='Password'
-            />
-
-            <Input
-              value={adminInviteToken}
-              onChange={({ target }) => setAdminInviteToken(target.value)}
-              label='Admin Invite Token'
-              type='text'
-              placeholder='6 digit token'
+              placeholder='Create a password'
             />
           </div>
 
           {error && (
-            <p className='text-xs text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2 mt-2'>
+            <p className='text-xs text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2 mt-3'>
               {error}
             </p>
           )}
@@ -140,7 +136,7 @@ const SignUp = () => {
             {isSubmitting ? 'Creating account…' : 'Sign Up'}
           </button>
 
-          <p className='text-[13px] text-ink-600'>
+          <p className='text-[13px] text-ink-600 text-center'>
             Already have an account?{' '}
             <Link
               className='font-medium text-brand-500 hover:text-brand-600 underline underline-offset-2'

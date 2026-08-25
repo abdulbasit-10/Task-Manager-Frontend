@@ -1,15 +1,30 @@
 import React from 'react'
 
-const UserCard = ({ userInfo }) => {
+const getInitials = (name) => {
+    if (!name) return '?';
+    return name.trim().split(' ').map((part) => part[0]).slice(0, 2).join('').toUpperCase();
+};
+
+const UserCard = ({ userInfo, onToggleStatus }) => {
+    const isActive = userInfo?.isActive !== false;
+
     return (
-        <div className='user-card p-2'>
+        <div className={`user-card p-2 ${!isActive ? 'opacity-60' : ''}`}>
             <div className='flex items-center justify-between'>
                 <div className='flex items-center gap-3'>
-                    <img
-                        src={userInfo?.profileImageUrl}
-                        alt={`Avatar`}
-                        className='w-12 h-12 rounded-full border-2 border-white'
-                    />
+                    {userInfo?.profileImageUrl ? (
+                        <img
+                            src={userInfo.profileImageUrl}
+                            alt={userInfo?.name || 'Avatar'}
+                            className='w-12 h-12 rounded-full border-2 border-white object-cover'
+                        />
+                    ) : (
+                        <div className='w-12 h-12 rounded-full bg-brand-50 border-2 border-white flex items-center justify-center shrink-0'>
+                            <span className='text-[13px] font-semibold text-brand-600'>
+                                {getInitials(userInfo?.name)}
+                            </span>
+                        </div>
+                    )}
 
                     <div className=''>
                         <p className='text-sm font-medium'>{userInfo?.name}</p>
@@ -18,6 +33,12 @@ const UserCard = ({ userInfo }) => {
                         </p>
                     </div>
                 </div>
+
+                {!isActive && (
+                    <span className='text-[10px] font-medium text-red-600 bg-red-50 border border-red-100 px-2 py-0.5 rounded-full shrink-0'>
+                        Deactivated
+                    </span>
+                )}
             </div>
 
             <div className='flex items-end gap-3 mt-5'>
@@ -29,7 +50,7 @@ const UserCard = ({ userInfo }) => {
 
                 <StatCard
                     label='In progress'
-                    count={userInfo?.inProgressTasks || 0}
+                    count={userInfo?.inprogressTasks || 0}
                     status='In progress'
                 />
 
@@ -39,6 +60,17 @@ const UserCard = ({ userInfo }) => {
                     status='Completed'
                 />
             </div>
+
+            <button
+                type='button'
+                onClick={() => onToggleStatus?.(userInfo._id)}
+                className={`w-full mt-3 text-[12px] font-medium py-1.5 rounded-lg border cursor-pointer transition-colors ${isActive
+                        ? 'text-red-600 bg-red-50 border-red-100 hover:bg-red-100'
+                        : 'text-green-600 bg-green-50 border-green-100 hover:bg-green-100'
+                    }`}
+            >
+                {isActive ? 'Deactivate' : 'Activate'}
+            </button>
         </div>
     )
 }
@@ -50,7 +82,7 @@ const StatCard = ({ label, count, status }) => {
 
     const getStatusTagColor = () => {
         switch (status) {
-            case "In Progress":
+            case "In progress":
                 return "text-cyan-500 bg-gray-50";
 
             case "Completed":

@@ -22,7 +22,7 @@ const FEATURES = [
 const AuthLayout = ({ children }) => {
     return (
         <div className='flex h-screen w-full overflow-hidden font-body'>
-            <div className='w-full md:w-[58%] h-full px-8 sm:px-12 pt-8 pb-12 bg-white overflow-y-auto'>
+            <div className='w-full md:w-[58%] h-full px-8 sm:px-12 pt-8 pb-12 bg-white overflow-hidden'>
                 <div className='flex items-center gap-2'>
                     <span className='w-8 h-8 rounded-lg bg-brand-500 flex items-center justify-center'>
                         <span className='w-2.5 h-2.5 rounded-[3px] bg-white' />

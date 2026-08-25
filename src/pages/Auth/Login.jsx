@@ -63,30 +63,32 @@ const Login = () => {
   };
 
   return <AuthLayout>
-    <div className='lg:w-[76%] h-3/4 md:h-full flex flex-col justify-center'>
-      <h3 className='text-2xl font-display font-semibold text-ink-900 mt-10'>Welcome back</h3>
+    <div className='w-full max-w-md mx-auto md:mx-0 h-auto md:h-full flex flex-col justify-center py-10 md:py-0'>
+      <h3 className='text-2xl font-display font-semibold text-ink-900'>Welcome back</h3>
       <p className='text-[13px] text-ink-600 mt-1.5 mb-8'>
         Please enter your details to login
       </p>
 
-      <form onSubmit={handleLogin}>
-        <Input
-          value={email}
-          onChange={({ target }) => setEmail(target.value)}
-          label='Email Address'
-          placeholder='munim@example.com'
-          type='text'
-        />
-        <Input
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          label='Password'
-          type='password'
-          placeholder='Password'
-        />
+      <form onSubmit={handleLogin} className='space-y-1'>
+        <div className='space-y-1'>
+          <Input
+            value={email}
+            onChange={({ target }) => setEmail(target.value)}
+            label='Email Address'
+            placeholder='Enter your email address'
+            type='text'
+          />
+          <Input
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+            label='Password'
+            type='password'
+            placeholder='Enter your password'
+          />
+        </div>
 
         {error && (
-          <p className='text-xs text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2 mt-1'>
+          <p className='text-xs text-red-600 bg-red-50 border border-red-100 rounded-lg px-3 py-2 mt-3'>
             {error}
           </p>
         )}
@@ -99,21 +101,15 @@ const Login = () => {
           {isSubmitting ? 'Logging in…' : 'Login'}
         </button>
 
-        <div className='mt-2'>
-          <p className='text-[13px] text-ink-600'>
-            Don&apos;t have an account?{' '}
-            <Link
-              className='font-medium text-brand-500 hover:text-brand-600 underline underline-offset-2'
-              to='/signUp'
-            >
-              Sign Up
-            </Link>
-          </p>
-
-          <p className='text-[13px] font-medium text-brand-500 hover:text-brand-600 underline underline-offset-2 mt-2 cursor-pointer w-fit'>
-            Contact Admin
-          </p>
-        </div>
+        <p className='text-[13px] text-ink-600 text-center'>
+          Don&apos;t have an account?{' '}
+          <Link
+            className='font-medium text-brand-500 hover:text-brand-600 underline underline-offset-2'
+            to='/signUp'
+          >
+            Sign Up
+          </Link>
+        </p>
       </form>
     </div>
   </AuthLayout>

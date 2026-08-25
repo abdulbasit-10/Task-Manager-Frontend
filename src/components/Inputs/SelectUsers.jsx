@@ -5,6 +5,11 @@ import { LuUser } from 'react-icons/lu'
 import Modal from '../Modal'
 import AvatarGroup from '../AvatarGroup'
 
+const getInitials = (name) => {
+    if (!name) return '?';
+    return name.trim().split(' ').map((part) => part[0]).slice(0, 2).join('').toUpperCase();
+};
+
 const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
 
     const [allUsers, setAllUsers] = useState([])
@@ -23,7 +28,7 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
     };
 
     const toggleUserSelection = (userId) => {
-        setTempSelectedUsers((prev) => 
+        setTempSelectedUsers((prev) =>
             prev.includes(userId) ? prev.filter((id) => id !== userId) : [...prev, userId]
         )
     }
@@ -82,15 +87,19 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
                 <div className='space-y-4 h-[60vh] overflow-y-auto'>
                     {allUsers.map((user) => (
                         <div key={user._id} className='flex items-center gap-4 p-3 border-b border-gray-200'>
-                            {/* <img
-                                src={user.profileImageUrl}
-                                alt={user.name}
-                                className='w-10 h-10 rounded-full' /> */}
-                            <img
-                                src={user.profileImageUrl || 'https://ui-avatars.com/api/?name=User&size=40'}
-                                alt={user.name}
-                                className='w-10 h-10 rounded-full'
-                            />
+                            {user.profileImageUrl ? (
+                                <img
+                                    src={user.profileImageUrl}
+                                    alt={user.name}
+                                    className='w-10 h-10 rounded-full object-cover'
+                                />
+                            ) : (
+                                <div className='w-10 h-10 rounded-full bg-brand-50 border border-brand-100 flex items-center justify-center shrink-0'>
+                                    <span className='text-[12px] font-semibold text-brand-600'>
+                                        {getInitials(user.name)}
+                                    </span>
+                                </div>
+                            )}
 
                             <div className='flex-1'>
                                 <p className='font-medium text-gray-800 dark:text-white'>
@@ -125,3 +134,4 @@ const SelectUsers = ({ selectedUsers, setSelectedUsers }) => {
 }
 
 export default SelectUsers
+

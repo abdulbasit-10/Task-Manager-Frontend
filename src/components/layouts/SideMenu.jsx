@@ -31,7 +31,7 @@ const SideMenu = ({ activeMenu }) => {
 
         return () => { }
     }, [user]);
-    return <div className='w-64 h-[calc(100vh-61px)] bg-white border-r border-gray-200/50 sticky top-[61px] z-20'>
+    return <div className='w-64 shrink-0 h-[calc(100vh-61px)] bg-white border-r border-gray-200/50 sticky top-[61px] z-20 overflow-y-auto'>
         <div className='flex flex-col items-center mb-7 pt-5'>
             <div className='relative'>
                 <img src={user?.profileImageUrl || ""}
@@ -56,17 +56,24 @@ const SideMenu = ({ activeMenu }) => {
             </p>
         </div>
 
-        {sideMenuData.map((item, index) => (
-            <button
-                key={`menu_${index}`}
-                className={`w-full flex items-center gap-4 text-[15px] ${activeMenu == item.label ? "text-blue-600 bg-linear-to-r from-blue-50/40 to-blue-100/50 border-r-3" : ""} py-3 px-6 mb-3 cursor-pointer`}
-                onClick={() => handleClick(item.path)}
-            >
-                <item.icon className='text-xl' />
-                {item.label}
-            </button>
-        ))}
+        {sideMenuData.map((item, index) => {
+            const isActive = activeMenu === item.label;
+            return (
+                <button
+                    key={`menu_${index}`}
+                    className={`w-full flex items-center gap-4 text-[15px] py-3 px-6 mb-1 cursor-pointer transition-colors duration-150 ${isActive
+                            ? "text-brand-600 bg-linear-to-r from-brand-50/60 to-brand-100/40 border-r-[3px] border-brand-500 font-medium"
+                            : "text-gray-600 hover:text-brand-500 hover:bg-brand-50/60"
+                        }`}
+                    onClick={() => handleClick(item.path)}
+                >
+                    <item.icon className='text-xl' />
+                    {item.label}
+                </button>
+            );
+        })}
     </div>
 }
 
 export default SideMenu
+

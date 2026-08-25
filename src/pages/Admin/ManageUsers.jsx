@@ -20,6 +20,18 @@ const ManageUsers = () => {
         }
     };
 
+    // activate/deactivate a user
+    const handleToggleStatus = async (userId) => {
+        try {
+            const response = await axiosInstance.put(API_PATHS.USERS.TOGGLE_USER_STATUS(userId));
+            toast.success(response.data?.message || "Status updated.");
+            getAllUsers();
+        } catch (error) {
+            console.error("Error updating user status:", error);
+            toast.error(error.response?.data?.message || "Could not update status.");
+        }
+    };
+
     // download task report
     const handleDownloadReport = async () => {
         try {
@@ -60,7 +72,7 @@ const ManageUsers = () => {
 
                 <div className='grid grid-cols-1 md:grid-cols-3 gap-4 mt-4'>
                     {allUsers?.map((user) => (
-                        <UserCard key={user._id} userInfo={user} />
+                        <UserCard key={user._id} userInfo={user} onToggleStatus={handleToggleStatus} />
                     ))}
                 </div>
             </div>
@@ -70,3 +82,4 @@ const ManageUsers = () => {
 
 export default ManageUsers
 // 4:13:21
+

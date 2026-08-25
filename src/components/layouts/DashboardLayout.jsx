@@ -24,3 +24,4 @@ const DashboardLayout = ({ children, activeMenu }) => {
 }
 
 export default DashboardLayout
+

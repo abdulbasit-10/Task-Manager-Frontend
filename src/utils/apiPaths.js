@@ -17,6 +17,7 @@ export const API_PATHS = {
         CREATE_USER: "/api/users",
         UPDATE_USER: (userId) => `/api/users/${userId}`,
         DELETE_USER: (userId) => `/api/users/${userId}`,
+        TOGGLE_USER_STATUS: (userId) => `/api/users/${userId}/status`,
     },
 
     TASKS: {

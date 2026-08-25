@@ -29,6 +29,9 @@ const TaskCard = ({ title, description, priority, status, progress, createdAt, d
             case "Medium":
                 return "text-yellow-500 bg-yellow-50 border border-yellow-500/10";
 
+            case "High":
+                return "text-green-600 bg-green-50 border border-green-500/10";
+
             default:
                 return "text-gray-500 bg-gray-50 border border-gray-500/10";
         }
