@@ -3,7 +3,8 @@ import {
     LuUsers,
     LuClipboardCheck,
     LuLogOut,
-    LuSquarePlus
+    LuSquarePlus,
+    LuMessageCircle
 } from "react-icons/lu"
 
 export const SIDE_MENU_DATA = [
@@ -33,6 +34,12 @@ export const SIDE_MENU_DATA = [
     },
     {
         id: "05",
+        label: "Chat",
+        icon: LuMessageCircle,
+        path: "/admin/chat"
+    },
+    {
+        id: "06",
         label: "Logout",
         icon: LuLogOut,
         path: "logout"
@@ -54,6 +61,12 @@ export const SIDE_MENU_USER_DATA = [
     },
     {
         id: "03",
+        label: "Chat",
+        icon: LuMessageCircle,
+        path: "/user/chat"
+    },
+    {
+        id: "04",
         label: "Logout",
         icon: LuLogOut,
         path: "logout"
@@ -71,3 +84,4 @@ export const STATUS_DATA = [
     { label: "In Progress", value: "In Progress" },
     { label: "Completed", value: "completed" },
 ]
+

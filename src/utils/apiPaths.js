@@ -40,6 +40,10 @@ export const API_PATHS = {
 
     IMAGE: {
         UPLOAD_IMAGE: "/api/auth/upload-image",
-    }
+    },
+
+    CHAT: {
+    GET_GROUP_MESSAGES: "/api/chat/group",
+},
 
 }

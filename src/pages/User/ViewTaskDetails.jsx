@@ -4,12 +4,16 @@ import axiosInstance from '../../utils/axiosInstance';
 import { API_PATHS } from '../../utils/apiPaths';
 import DashboardLayout from '../../components/layouts/DashboardLayout';
 import moment from 'moment';
+import toast from 'react-hot-toast';
 import AvatarGroup from '../../components/AvatarGroup';
 import { LuSquareArrowOutUpRight } from 'react-icons/lu';
+
+const STATUS_OPTIONS = ["Pending", "In Progress", "Completed"];
 
 const ViewTaskDetails = () => {
   const { id } = useParams();
   const [task, setTask] = useState(null);
+  const [isUpdatingStatus, setIsUpdatingStatus] = useState(false);
 
   const getStatusTagColor = (status) => {
     switch (status) {
@@ -35,6 +39,28 @@ const ViewTaskDetails = () => {
       }
     } catch (error) {
       console.log("Error fetching task details:", error);
+    }
+  }
+
+  // handle manual status change (works even when there is no checklist)
+  const handleStatusChange = async (newStatus) => {
+    if (!task || newStatus === task.status) return;
+
+    setIsUpdatingStatus(true);
+    try {
+      const response = await axiosInstance.put(API_PATHS.TASKS.UPDATE_TASK_STATUS(id), {
+        status: newStatus,
+      });
+
+      if (response.data?.task) {
+        setTask(response.data.task);
+      }
+      toast.success("Status updated.");
+    } catch (error) {
+      console.log("Error updating status:", error);
+      toast.error(error.response?.data?.message || "Could not update status.");
+    } finally {
+      setIsUpdatingStatus(false);
     }
   }
 
@@ -130,19 +156,48 @@ const ViewTaskDetails = () => {
                 </div>
               </div>
 
-              <div className='mt-2'>
+              <div className='mt-4'>
+                <label className='text-xs font-medium text-slate-500'>
+                  Update Status
+                </label>
+
+                <div className='flex gap-2 mt-1.5'>
+                  {STATUS_OPTIONS.map((option) => (
+                    <button
+                      key={option}
+                      type='button'
+                      disabled={isUpdatingStatus}
+                      onClick={() => handleStatusChange(option)}
+                      className={`text-[12px] font-medium px-3 py-1.5 rounded-lg border cursor-pointer transition-colors disabled:opacity-60 disabled:cursor-not-allowed ${task?.status === option
+                          ? "text-brand-600 bg-brand-50 border-brand-200"
+                          : "text-gray-600 bg-white border-gray-200 hover:bg-gray-50"
+                        }`}
+                    >
+                      {option}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              <div className='mt-4'>
                 <label className='text-xs font-medium text-slate-500'>
                   Todo Checklist
                 </label>
 
-                {task?.todoChecklist?.map((item, index) => (
-                  <TodoCheckList
-                    key={`todo_${index}`}
-                    text={item.text}
-                    isChecked={item?.completed}
-                    onChange={() => updateTodoChecklist(index)}
-                  />
-                ))}
+                {task?.todoChecklist?.length > 0 ? (
+                  task.todoChecklist.map((item, index) => (
+                    <TodoCheckList
+                      key={`todo_${index}`}
+                      text={item.text}
+                      isChecked={item?.completed}
+                      onChange={() => updateTodoChecklist(index)}
+                    />
+                  ))
+                ) : (
+                  <p className='text-[12px] text-gray-400 mt-1.5'>
+                    No checklist items — use the buttons above to update progress.
+                  </p>
+                )}
               </div>
 
               {task?.attachments?.length > 0 && (
@@ -211,3 +266,4 @@ const Attachment = ({ link, index, onClick }) => {
     <LuSquareArrowOutUpRight className='text-gray-400' />
   </div>
 }
+
