@@ -13,7 +13,7 @@ import PrivateRoute from './routes/PrivateRoute.jsx'
 import UserProvider, { UserContext } from './context/userContext.jsx'
 import { Toaster } from 'react-hot-toast'
 import ProfileSettings from './pages/Profile/ProfileSettings.jsx'
-import GroupChat from './pages/Chat/GroupChat.jsx'
+import Chat from './pages/Chat/Chat.jsx'
 
 
 const App = () => {
@@ -31,7 +31,7 @@ const App = () => {
               <Route path='/admin/tasks' element={<ManageTasks />} />
               <Route path='/admin/create-task' element={<CreateTask />} />
               <Route path='/admin/users' element={<ManageUsers />} />
-              <Route path='/admin/chat' element={<GroupChat />} />
+              <Route path='/admin/chat' element={<Chat />} />
             </Route>
 
             {/* user Routes */}
@@ -39,7 +39,7 @@ const App = () => {
               <Route path='/user/dashboard' element={<UserDashboard />} />
               <Route path='/user/my-tasks' element={<MyTasks />} />
               <Route path='/user/task-details/:id' element={<ViewTaskDetails />} />
-              <Route path='/user/chat' element={<GroupChat />} />
+              <Route path='/user/chat' element={<Chat />} />
             </Route>
 
             {/* Shared Routes (admin + member) */}

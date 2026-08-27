@@ -44,6 +44,8 @@ export const API_PATHS = {
 
     CHAT: {
     GET_GROUP_MESSAGES: "/api/chat/group",
+    GET_CONTACTS: "/api/chat/contacts",
+    GET_DM_MESSAGES: (userId) => `/api/chat/dm/${userId}`,
 },
 
 }
